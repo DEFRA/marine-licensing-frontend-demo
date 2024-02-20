@@ -25,7 +25,7 @@ const config = convict({
   serviceName: {
     doc: 'Applications Service Name',
     format: String,
-    default: 'CDP Node.js Frontend Template'
+    default: 'marine-licensing-frontend-demo'
   },
   root: {
     doc: 'Project root',
@@ -41,7 +41,7 @@ const config = convict({
   appPathPrefix: {
     doc: 'Application url path prefix',
     format: String,
-    default: '/cdp-node-frontend-template',
+    default: '/marine-licensing-frontend-demo',
     env: 'APP_PATH_PREFIX'
   },
   isProduction: {

@@ -1,4 +1,4 @@
-# CDP Node.js Frontend Template
+# marine-licensing-frontend-demo
 
 Core delivery platform Node.js Frontend Template.
 
@@ -26,7 +26,7 @@ easier to use the Node Version Manager [nvm](https://github.com/creationix/nvm)
 To use the correct version of Node.js for this application, via nvm:
 
 ```bash
-cd cdp-node-frontend-template
+cd marine-licensing-frontend-demo
 nvm use
 ```
 
@@ -80,13 +80,13 @@ npm run
 Build:
 
 ```bash
-docker build --target development --no-cache --tag cdp-node-frontend-template:development .
+docker build --target development --no-cache --tag marine-licensing-frontend-demo:development .
 ```
 
 Run:
 
 ```bash
-docker run -p 3000:3000 cdp-node-frontend-template:development
+docker run -p 3000:3000 marine-licensing-frontend-demo:development
 ```
 
 ### Production image
@@ -94,13 +94,13 @@ docker run -p 3000:3000 cdp-node-frontend-template:development
 Build:
 
 ```bash
-docker build --no-cache --tag cdp-node-frontend-template .
+docker build --no-cache --tag marine-licensing-frontend-demo .
 ```
 
 Run:
 
 ```bash
-docker run -p 3000:3000 cdp-node-frontend-template
+docker run -p 3000:3000 marine-licensing-frontend-demo
 ```
 
 ## Licence
