@@ -7,6 +7,7 @@ import { router } from './router'
 import { requestLogger } from '~/src/server/common/helpers/logging/request-logger'
 import { catchAll } from '~/src/server/common/helpers/errors'
 import { secureContext } from '~/src/server/common/helpers/secure-context'
+import { azureOidc } from '~/src/server/common/helpers/auth/azure-oidc'
 
 const isProduction = config.get('isProduction')
 
@@ -37,8 +38,16 @@ async function createServer() {
       stripTrailingSlash: true
     }
   })
-
+  server.state('session', {
+    ttl: null,
+    isSecure: false,
+    isHttpOnly: true,
+    encoding: 'base64json',
+    clearInvalid: true,
+    strictHeader: true
+  })
   await server.register(requestLogger)
+  await server.register(azureOidc)
 
   if (isProduction) {
     await server.register(secureContext)

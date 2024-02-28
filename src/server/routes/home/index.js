@@ -1,4 +1,4 @@
-import { homeController } from '~/src/server/home/controller'
+import { get, post } from './controller'
 
 const home = {
   plugin: {
@@ -8,7 +8,12 @@ const home = {
         {
           method: 'GET',
           path: '/',
-          ...homeController
+          handler: get
+        },
+        {
+          method: 'POST',
+          path: '/',
+          handler: post
         }
       ])
     }
