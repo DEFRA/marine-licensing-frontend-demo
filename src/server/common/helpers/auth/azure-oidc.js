@@ -28,14 +28,7 @@ const azureOidc = {
           useParamsAuth: true,
           auth: oidc.authorization_endpoint,
           token: oidc.token_endpoint,
-          scope: [
-            // `api://${config.azureClientId}/forms.user`,
-            'openid'
-            // 'profile',
-            // 'email',
-            // 'offline_access',
-            // 'user.read'
-          ],
+          scope: ['openid'],
           profile: async function (credentials) {
             const payload = jwt.token.decode(credentials.token).decoded.payload
 
