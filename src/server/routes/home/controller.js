@@ -1,9 +1,7 @@
 import { searchCases, createCase } from '~/src/server/services/dataverse'
-import { config } from '~/src/config'
 
 export const get = async (request, h) => {
-  const signInUrl = `${config.get('entraOAuthUrl')}oauth2/v2.0/authorize?client_id=${config.get('entraClientId')}&response_type=id_token
-&redirect_uri=http%3A%2F%2Flocalhost:3000%2Fmarine-licensing-frontend-demo%2Fauth%2Fcallback&response_mode=form_post&scope=openid&state=12345&nonce=678910`
+  const signInUrl = `marine-licensing-frontend-demo/auth/callback`
 
   const session = request.state.session
   const email = session?.email
