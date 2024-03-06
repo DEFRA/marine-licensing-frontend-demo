@@ -22,7 +22,7 @@ If you don't have one already..
 1. create a Microsoft Entra account in the tenant you'll be creating your environment in
   - format will be {username}@{tentantName}.onmicrosoft.com
 2. make sure the account has the Dynamics Customer Service Enterprise license
-3. sign in to [power platform admin environments page](https://admin.powerplatform.microsoft.com/environments)^gG
+3. sign in to [power platform admin environments page](https://admin.powerplatform.microsoft.com/environments)
 4. create an environment (either trial or sandbox) with dataverse enabled
 ![](images/Pasted%20image%2020240229132134.png)
   - use settings as below, and automatically deploy `Customer Service`
