@@ -11,28 +11,12 @@
 
   {% call appPageBody() %}
 
-    <form method="POST" case>
-      {{ govukInput({
-        label: {
-          text: "What is the name of your new case?"
-        },
-        id: "case-title",
-        name: "title"
-      }) }}
-
-      {{ govukInput({
-        label: {
-          text: "What is your name?"
-        },
-        id: "contact-name",
-        name: "name"
-      }) }}
-
-
+      <p>Successfully created case.</p>
       {{ govukButton({
-        text: "Create case"
+        href: '/marine-licensing-frontend-demo',
+        text: "Return to case creation"
       }) }}
-    </form>
+
   {% endcall %}
 
 {% endblock %}

@@ -1,7 +1,7 @@
-import { searchCases, createCase } from '~/src/server/services/dataverse'
+import { searchCases } from '~/src/server/services/dataverse'
 
 export const get = async (request, h) => {
-  const signInUrl = `marine-licensing-frontend-demo/auth/callback`
+  const signInUrl = `/marine-licensing-frontend-demo/auth/callback`
 
   const session = request.state.session
   const email = session?.email
@@ -19,7 +19,7 @@ export const get = async (request, h) => {
       html: `<a href="${c.link}">view case</a>`
     }
   ])
-  return h.view('routes/home/index', {
+  return h.view('routes/admin/index', {
     pageTitle: 'Home',
     heading: 'Home',
     breadcrumbs: [
@@ -31,13 +31,5 @@ export const get = async (request, h) => {
     rows,
     signInUrl,
     profile: { email, displayName }
-  })
-}
-
-export const post = async (request, h) => {
-  await createCase(request.payload)
-  return h.view('routes/home/form-submitted', {
-    pageTitle: 'Home',
-    heading: 'Home'
   })
 }

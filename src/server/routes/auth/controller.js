@@ -22,7 +22,7 @@ const authCallbackController = {
       )
     }
 
-    return h.redirect(config.get('appPathPrefix'))
+    return h.redirect(config.get('appPathPrefix') + '/admin')
   }
 }
 
