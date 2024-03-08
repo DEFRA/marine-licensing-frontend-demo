@@ -3,10 +3,7 @@ import { config } from '~/src/config'
 
 export const get = async (request, h) => {
   const signInUrl = `/marine-licensing-frontend-demo/auth/callback`
-
   const session = request.state.session
-  const email = session?.email
-  const displayName = session?.displayName
 
   const cases = await searchCases()
   const rows = cases.map((c) => [
@@ -35,6 +32,6 @@ export const get = async (request, h) => {
     ],
     rows,
     signInUrl,
-    profile: { email, displayName }
+    profile: session
   })
 }

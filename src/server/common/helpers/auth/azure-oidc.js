@@ -18,6 +18,13 @@ const azureOidc = {
       // making the OIDC config available to server
       server.app.oidc = oidc
 
+      const claims = {
+        id_token: {
+          groups: { essential: true },
+          roles: { essential: true }
+        }
+      }
+
       server.auth.strategy('azure-oidc', 'bell', {
         location: (request) => {
           return authCallbackUrl
@@ -29,14 +36,17 @@ const azureOidc = {
           auth: oidc.authorization_endpoint,
           token: oidc.token_endpoint,
           scope: ['openid'],
-          profile: async function (credentials) {
+          profile: async function (credentials, params) {
             const payload = jwt.token.decode(credentials.token).decoded.payload
+            const idTokenPayload = jwt.token.decode(params.id_token).decoded
+              .payload
 
             credentials.profile = {
               id: payload.oid,
               displayName: payload.name,
               email: payload.upn ?? payload.preferred_username,
-              loginHint: payload.login_hint
+              loginHint: payload.login_hint,
+              roles: idTokenPayload.roles
             }
           }
         },
@@ -44,7 +54,8 @@ const azureOidc = {
         clientId: config.get('entraClientId'),
         clientSecret: config.get('entraClientSecret'),
         providerParams: {
-          redirect_uri: authCallbackUrl
+          redirect_uri: authCallbackUrl,
+          claims: encodeURI(JSON.stringify(claims))
         },
         cookie: 'bell-azure-oidc',
         isSecure: false,

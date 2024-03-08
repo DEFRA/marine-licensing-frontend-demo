@@ -11,15 +11,7 @@ const authCallbackController = {
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
       const { profile } = request.auth.credentials
-      h.state(
-        'session',
-        {
-          id: profile.id,
-          email: profile.email,
-          displayName: profile.displayName
-        },
-        { path: '/' }
-      )
+      h.state('session', profile, { path: '/' })
     }
 
     return h.redirect(config.get('appPathPrefix') + '/admin')

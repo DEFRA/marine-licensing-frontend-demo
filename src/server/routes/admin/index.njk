@@ -15,6 +15,11 @@
   <p>
     {{profile.displayName}} ({{profile.email}})
   </p>
+  <p>
+    {% for role in profile.roles %}
+      {{role}}
+    {% endfor %}
+  </p>
   {% endif %}
 
   <a href="{{signInUrl}}">sign in as admin</a>
