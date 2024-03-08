@@ -1,4 +1,5 @@
 import { searchCases } from '~/src/server/services/dataverse'
+import { config } from '~/src/config'
 
 export const get = async (request, h) => {
   const signInUrl = `/marine-licensing-frontend-demo/auth/callback`
@@ -20,12 +21,16 @@ export const get = async (request, h) => {
     }
   ])
   return h.view('routes/admin/index', {
-    pageTitle: 'Home',
-    heading: 'Home',
+    pageTitle: 'Admin',
+    heading: 'Admin',
     breadcrumbs: [
       {
-        text: 'Home',
-        href: '/'
+        text: 'home',
+        href: `${config.get('appPathPrefix')}`
+      },
+      {
+        text: 'admin',
+        href: `${config.get('appPathPrefix')}/admin`
       }
     ],
     rows,
