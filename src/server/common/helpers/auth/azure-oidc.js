@@ -1,6 +1,7 @@
 import jwt from '@hapi/jwt'
 import bell from '@hapi/bell'
 import { config } from '~/src/config'
+import { dataverseBaseUrl } from '~/src/server/services/dataverse'
 
 // shamelessly stolen from https://github.com/DEFRA/forms-designer
 const azureOidc = {
@@ -25,6 +26,8 @@ const azureOidc = {
         }
       }
 
+      const scope = ['openid', `${dataverseBaseUrl}/user_impersonation`]
+
       server.auth.strategy('azure-oidc', 'bell', {
         location: (request) => {
           return authCallbackUrl
@@ -35,7 +38,7 @@ const azureOidc = {
           useParamsAuth: true,
           auth: oidc.authorization_endpoint,
           token: oidc.token_endpoint,
-          scope: ['openid'],
+          scope,
           profile: async function (credentials, params) {
             const payload = jwt.token.decode(credentials.token).decoded.payload
             const idTokenPayload = jwt.token.decode(params.id_token).decoded
@@ -46,7 +49,8 @@ const azureOidc = {
               displayName: payload.name,
               email: payload.upn ?? payload.preferred_username,
               loginHint: payload.login_hint,
-              roles: idTokenPayload.roles
+              roles: idTokenPayload.roles,
+              accessToken: credentials.token
             }
           }
         },

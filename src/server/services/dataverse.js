@@ -7,14 +7,14 @@ const id = config.get('entraClientId')
 const secret = config.get('entraClientSecret')
 const tokenHost = config.get('entraOAuthUrl')
 
-const dataverseBaseUrl = 'https://' + config.get('dataverseApiDomain')
+export const dataverseBaseUrl = 'https://' + config.get('dataverseApiDomain')
 const scope = dataverseBaseUrl + '/.default'
 
 const dataverseApiUrl = `${dataverseBaseUrl}/api/data/v9.2/`
 const dataverseIncidentsUrl = `${dataverseApiUrl}/incidents`
 const dataverseContactsUrl = `${dataverseApiUrl}/contacts`
 
-const getAccessToken = async () => {
+export const getServerToServerAccessToken = async () => {
   const oauthClient = new SimpleOAuth2.ClientCredentials({
     client: { id, secret },
     auth: {
@@ -27,44 +27,44 @@ const getAccessToken = async () => {
     }
   })
 
-  return oauthClient.getToken({ scope })
+  const token = await oauthClient.getToken({ scope })
+  return token.token.access_token
 }
 
-const oAuthHeaders = async () => {
-  const token = await getAccessToken()
+const oAuthHeaders = async (token) => {
   return {
-    Authorization: 'Bearer ' + token.token.access_token,
+    Authorization: `Bearer ${token}`,
     'OData-MaxVersion': '4.0',
     'OData-Version': '4.0'
   }
 }
 
-const getHeaders = async () => ({
-  ...(await oAuthHeaders()),
+const getHeaders = async (token) => ({
+  ...(await oAuthHeaders(token)),
   Accept: 'application/json'
 })
 
-const postHeaders = async () => ({
-  ...(await oAuthHeaders()),
+const postHeaders = async (token) => ({
+  ...(await oAuthHeaders(token)),
   Accept: 'application/json',
   Consistency: 'Strong',
   'Content-Type': 'application/json',
   Prefer: 'odata.include-annotations=' * ''
 })
 
-const getContact = async (contactName) => {
+const getContact = async (token, contactName) => {
   const url = `${dataverseContactsUrl}?$filter=contains(fullname, '${contactName}')`
   const { payload } = await Wreck.get(url, {
-    headers: await getHeaders()
+    headers: await getHeaders(token)
   })
 
   return { contactId: JSON.parse(payload).value[0].contactid }
 }
 
-export const createCase = async ({ title, name }) => {
-  const { contactId } = await getContact(name)
+export const createCase = async (token, { title, name }) => {
+  const { contactId } = await getContact(token, name)
   const { payload } = await Wreck.post(dataverseIncidentsUrl, {
-    headers: await postHeaders(),
+    headers: await postHeaders(token),
     payload: JSON.stringify({
       title,
       statuscode: -1,
@@ -85,9 +85,9 @@ const caseDetails = (caseResponse) =>
     link: `https://${config.get('dynamicsDomain')}/main.aspx?appid=${config.get('dynamicsAppId')}&pagetype=entityrecord&etn=incident&id=${e.incidentid}`
   }))
 
-export const searchCases = async () => {
+export const searchCases = async (token) => {
   const { payload } = await Wreck.get(`${dataverseIncidentsUrl}`, {
-    headers: await getHeaders()
+    headers: await getHeaders(token)
   })
   return caseDetails(JSON.parse(payload))
 }

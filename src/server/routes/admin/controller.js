@@ -5,7 +5,7 @@ export const get = async (request, h) => {
   const signInUrl = `/marine-licensing-frontend-demo/auth/callback`
   const session = request.state.session
 
-  const cases = await searchCases()
+  const cases = session ? await searchCases(session.accessToken) : []
   const rows = cases.map((c) => [
     {
       text: c.number

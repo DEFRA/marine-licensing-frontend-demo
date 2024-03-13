@@ -1,4 +1,7 @@
-import { createCase } from '~/src/server/services/dataverse'
+import {
+  getServerToServerAccessToken,
+  createCase
+} from '~/src/server/services/dataverse'
 
 export const get = async (request, h) => {
   return h.view('routes/home/index', {
@@ -14,7 +17,8 @@ export const get = async (request, h) => {
 }
 
 export const post = async (request, h) => {
-  await createCase(request.payload)
+  const token = await getServerToServerAccessToken()
+  await createCase(token, request.payload)
   return h.view('routes/home/form-submitted', {
     pageTitle: 'Home',
     heading: 'Home'
