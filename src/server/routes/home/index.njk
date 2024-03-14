@@ -1,0 +1,38 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Marine Licensing Demo"
+  }) }}
+
+  {% call appPageBody() %}
+
+    <form method="POST" case>
+      {{ govukInput({
+        label: {
+          text: "What is the name of your new case?"
+        },
+        id: "case-title",
+        name: "title"
+      }) }}
+
+      {{ govukInput({
+        label: {
+          text: "What is your name?"
+        },
+        id: "contact-name",
+        name: "name"
+      }) }}
+
+
+      {{ govukButton({
+        text: "Create case"
+      }) }}
+    </form>
+  {% endcall %}
+
+{% endblock %}

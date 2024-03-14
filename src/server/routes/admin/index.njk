@@ -1,0 +1,43 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Marine Licensing Demo"
+  }) }}
+
+  {% call appPageBody() %}
+
+  {% if profile.displayName %}
+  <p>
+    {{profile.displayName}} ({{profile.email}})
+  </p>
+  <p>
+    {% for role in profile.roles %}
+      {{role}}
+    {% endfor %}
+  </p>
+  {% endif %}
+
+  <a href="{{signInUrl}}">sign in as admin</a>
+
+    {{ govukTable({
+      head: [
+        {
+          text: "case number"
+        },
+        {
+          text: "title"
+        },
+        {
+          text: ''
+        }
+      ],
+      rows: rows
+    }) }}
+  {% endcall %}
+
+{% endblock %}
