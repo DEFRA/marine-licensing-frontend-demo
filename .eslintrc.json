@@ -14,7 +14,7 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "no-console": "error"
+    "no-console": "warn"
   },
   "ignorePatterns": [".server", ".public", "src/__fixtures__", "coverage"]
 }
