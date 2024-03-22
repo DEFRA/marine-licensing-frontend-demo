@@ -78,6 +78,13 @@ const config = convict({
     nullable: true,
     default: null,
     env: 'CDP_HTTPS_PROXY'
+  },
+  backendApiUrl: {
+    doc: 'Endpoint for the backend API service',
+    format: String,
+    nullable: true,
+    default: null,
+    env: 'BACKEND_API_URL'
   }
 })
 

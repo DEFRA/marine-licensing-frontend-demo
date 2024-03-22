@@ -1,3 +1,4 @@
+import Wreck from '@hapi/wreck'
 import { config } from '~/src/config'
 
 const breadcrumbs = [
@@ -26,7 +27,13 @@ const getRoute = {
 const postRoute = {
   method: 'POST',
   path: '/apply',
-  handler: (request, h) => {
+  handler: async (request, h) => {
+    const { params } = request
+
+    await Wreck.post(`${config.get('backendApiUrl')}/application`, {
+      ...params
+    })
+
     return h.view('apply/submitted', {
       pageTitle: 'Application submitted',
       heading: 'Marine license application submitted',
