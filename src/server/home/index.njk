@@ -1,12 +1,19 @@
 {% extends 'layouts/page.njk' %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block content %}
   {{ appHeading({
     text: heading,
-    caption: "Marine Licensing Demo"
+    caption: "Marine Licensing Alpha"
   }) }}
 
   {% call appPageBody() %}
+
+    {{ govukButton({
+      text: "Start now",
+      href: applicationUrl,
+      isStartButton: true
+    }) }}
   {% endcall %}
 
 {% endblock %}
