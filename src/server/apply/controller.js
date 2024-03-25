@@ -28,10 +28,13 @@ const postRoute = {
   method: 'POST',
   path: '/apply',
   handler: async (request, h) => {
-    const { params } = request
+    const { payload } = request
 
     await Wreck.post(`${config.get('backendApiUrl')}/applications`, {
-      ...params
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      payload
     })
 
     return h.view('apply/submitted', {
