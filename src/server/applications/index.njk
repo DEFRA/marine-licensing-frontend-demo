@@ -1,0 +1,36 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/label/macro.njk" import govukLabel %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Marine Licensing Alpha"
+  }) }}
+
+  {% call appPageBody() %}
+
+{{ govukSummaryList({
+  rows: [
+    {
+      key: {
+        text: "Project name"
+      },
+      value: {
+        text: title
+      }
+    },
+    {
+      key: {
+        text: "Describe your project"
+      },
+      value: {
+        text: background
+      }
+    }
+  ]
+}) }}
+
+  {% endcall %}
+{% endblock %}
