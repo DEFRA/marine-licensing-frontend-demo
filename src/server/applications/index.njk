@@ -10,27 +10,8 @@
   }) }}
 
   {% call appPageBody() %}
+    <p class="govuk-body-l">These are the details as submitted by the applicant.</p>
 
-{{ govukSummaryList({
-  rows: [
-    {
-      key: {
-        text: "Project name"
-      },
-      value: {
-        text: title
-      }
-    },
-    {
-      key: {
-        text: "Describe your project"
-      },
-      value: {
-        text: background
-      }
-    }
-  ]
-}) }}
-
+    {% include 'partials/application.njk' %}
   {% endcall %}
 {% endblock %}

@@ -1,0 +1,105 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+<form method="POST" case>
+
+  {{ govukInput({
+    label: {
+      text: "Project name"
+    },
+    id: "title",
+    name: "title",
+    value: application.title,
+    disabled: formDisabled
+  }) }}
+
+  {{ govukTextarea({
+    name: "background",
+    id: "background",
+    label: {
+      text: "Describe your project"
+    },
+    value: application.background,
+    disabled: formDisabled
+  }) }}
+
+  {{ govukTextarea({
+    name: "site",
+    id: "site",
+    label: {
+      text: "Where will the project take place?"
+    },
+    hint: {
+      text: "Provide the coordinates that define the boundaries of your project"
+    },
+    value: application.site.coordinates,
+    disabled: formDisabled
+  }) }}
+
+  {% call govukFieldset({
+    legend: {
+      text: "What are your personal details?",
+      classes: "govuk-fieldset__legend--m"
+    }
+  }) %}
+
+    {{ govukInput({
+      label: {
+        text: "First Name"
+      },
+      id: "firstName",
+      name: "firstName",
+      autocomplete: "given-name",
+      value: application.applicant.firstName,
+      disabled: formDisabled
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "Last Name"
+      },
+      id: "lastName",
+      name: "lastName",
+      autocomplete: "family-name",
+      value: application.applicant.lastName,
+      disabled: formDisabled
+    }) }}
+
+    {{ govukInput({
+      label: {
+        text: "Address"
+      },
+      id: "address",
+      name: "address",
+      autocomplete: "address",
+      value: application.applicant.address,
+      disabled: formDisabled
+    }) }}
+    {% from "govuk/components/input/macro.njk" import govukInput %}
+
+    {{ govukInput({
+      label: {
+        text: "Email address"
+      },
+      hint: {
+        text: "We'll use this to identify you during the application process"
+      },
+      id: "email",
+      name: "email",
+      type: "email",
+      autocomplete: "email",
+      spellcheck: false,
+      value: application.applicant.email,
+      disabled: formDisabled
+
+    }) }}
+  {% endcall %}
+
+  {%if not formDisabled %}
+    {{ govukButton({
+      text: "Submit application"
+    }) }}
+  {% endif %}
+</form>

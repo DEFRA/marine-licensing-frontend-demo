@@ -21,11 +21,14 @@ export const getApplication = {
     )
 
     const application = JSON.parse(payload).value
+    const heading = `Application ${prefix}/${year}/${sequenceNumber}`
 
     return h.view('applications/index', {
-      pageTitle: `Application ${prefix}/${year}/${sequenceNumber}`,
+      pageTitle: heading,
+      heading,
       breadcrumbs,
-      ...application
+      application,
+      formDisabled: true
     })
   }
 }
