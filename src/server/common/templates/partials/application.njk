@@ -19,7 +19,10 @@
     name: "background",
     id: "background",
     label: {
-      text: "Describe your project"
+      text: "Describe the project"
+    },
+    hint: {
+      text: "Include details of what the project will involve and what it aims to achieve"
     },
     value: application.background,
     disabled: formDisabled
@@ -40,7 +43,7 @@
 
   {% call govukFieldset({
     legend: {
-      text: "What are your personal details?",
+      text: "Applicant details",
       classes: "govuk-fieldset__legend--m"
     }
   }) %}
@@ -84,7 +87,7 @@
         text: "Email address"
       },
       hint: {
-        text: "We'll use this to identify you during the application process"
+        text: "This email address will be used for correspondence during the process"
       },
       id: "email",
       name: "email",
