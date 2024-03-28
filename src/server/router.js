@@ -4,6 +4,7 @@ import { health } from '~/src/server/health'
 import { home } from '~/src/server/home'
 import { apply } from '~/src/server/apply'
 import { applications } from '~/src/server/applications'
+import { admin } from '~/src/server/admin'
 import { serveStaticFiles } from '~/src/server/common/helpers/serve-static-files'
 
 const router = {
@@ -16,6 +17,7 @@ const router = {
         home,
         apply,
         applications,
+        admin,
         serveStaticFiles
       ])
     }

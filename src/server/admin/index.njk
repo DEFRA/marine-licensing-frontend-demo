@@ -1,0 +1,29 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Marine Licensing Alpha"
+  }) }}
+
+  {% call appPageBody() %}
+
+  <form method=POST action={{dropDatabasesUrl}}>
+
+    <p>Drop all data from MongoDB.</p>
+
+    {{ govukWarningText({
+      text: "This does not clear data from dynamics / dataverse.",
+      iconFallbackText: "Warning"
+    }) }}
+
+    {{ govukButton({
+      text: "Drop database",
+      classes: "govuk-button--warning"
+    }) }}
+  </form>
+
+  {% endcall %}
+{% endblock %}
