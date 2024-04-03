@@ -12,7 +12,10 @@
     id: "title",
     name: "title",
     value: application.title,
-    disabled: formDisabled
+    disabled: formDisabled,
+    errorMessage: {
+      text: amendment.title.comment
+    } if amendment.title.comment
   }) }}
 
   {{ govukTextarea({
@@ -25,7 +28,10 @@
       text: "Include details of what the project will involve and what it aims to achieve"
     },
     value: application.background,
-    disabled: formDisabled
+    disabled: formDisabled,
+    errorMessage: {
+      text: amendment.background.comment
+    } if amendment.background.comment
   }) }}
 
   {{ govukTextarea({
@@ -38,7 +44,10 @@
       text: "Provide the coordinates that define the boundaries of your project"
     },
     value: application.site.coordinates,
-    disabled: formDisabled
+    disabled: formDisabled,
+    errorMessage: {
+      text: amendment.site.coordinates.comment
+    } if amendment.site.coordinates.comment
   }) }}
 
   {% call govukFieldset({
@@ -56,7 +65,10 @@
       name: "firstName",
       autocomplete: "given-name",
       value: application.applicant.firstName,
-      disabled: formDisabled
+      disabled: formDisabled,
+      errorMessage: {
+        text: amendment.applicant.firstName.comment
+      } if amendment.applicant.firstName.comment
     }) }}
 
     {{ govukInput({
@@ -67,7 +79,10 @@
       name: "lastName",
       autocomplete: "family-name",
       value: application.applicant.lastName,
-      disabled: formDisabled
+      disabled: formDisabled,
+      errorMessage: {
+        text: amendment.applicant.lastName.comment
+      } if amendment.applicant.lastName.comment
     }) }}
 
     {{ govukInput({
@@ -78,7 +93,10 @@
       name: "address",
       autocomplete: "address",
       value: application.applicant.address,
-      disabled: formDisabled
+      disabled: formDisabled,
+      errorMessage: {
+        text: amendment.applicant.address.comment
+      } if amendment.applicant.address.comment
     }) }}
     {% from "govuk/components/input/macro.njk" import govukInput %}
 
@@ -95,8 +113,10 @@
       autocomplete: "email",
       spellcheck: false,
       value: application.applicant.email,
-      disabled: formDisabled
-
+      disabled: formDisabled,
+      errorMessage: {
+        text: amendment.applicant.email.comment
+      } if amendment.applicant.email.comment
     }) }}
   {% endcall %}
 
