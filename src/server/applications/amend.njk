@@ -1,0 +1,22 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/label/macro.njk" import govukLabel %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Marine Licensing Alpha"
+  }) }}
+
+  {% call appPageBody() %}
+    <p class="govuk-body-l">These are the details as submitted by the applicant.</p>
+
+    {{ govukErrorSummary({
+      titleText: "Your case worker has identified some issues with your application. Please review below for specific information."
+    }) }}
+
+    {% include 'partials/application.njk' %}
+  {% endcall %}
+{% endblock %}
