@@ -46,4 +46,10 @@ function renderComponent(componentName, params, callBlock) {
   return load(nunjucksTestEnv.renderString(macroString))
 }
 
-export { renderComponent }
+function renderTemplate(templateName, params) {
+  const template = nunjucksTestEnv.render(templateName, params)
+
+  return load(template)
+}
+
+export { renderComponent, renderTemplate }
