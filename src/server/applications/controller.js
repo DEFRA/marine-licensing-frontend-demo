@@ -21,19 +21,25 @@ export const getApplication = {
     )
     const application = JSON.parse(applicationJson).value
 
+    const { payload: amendmentJson } = await Wreck.get(
+      `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}/amendment-request`
+    )
+    const { value: amendment } = JSON.parse(amendmentJson)
+
     return h.view('applications/index', {
       pageTitle: `Application ${prefix}/${year}/${sequenceNumber}`,
       heading: `Application ${prefix}/${year}/${sequenceNumber}`,
       breadcrumbs,
       application,
-      formDisabled: true
+      amendment,
+      formDisabled: !amendment
     })
   }
 }
 
-export const getApplicationAmendment = {
+export const getReview = {
   method: 'GET',
-  path: '/applications/{prefix}/{year}/{sequenceNumber}/amend',
+  path: '/applications/{prefix}/{year}/{sequenceNumber}/review',
   handler: async (request, h) => {
     const {
       params: { prefix, year, sequenceNumber }
@@ -42,19 +48,85 @@ export const getApplicationAmendment = {
     const { payload: applicationJson } = await Wreck.get(
       `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}`
     )
-    const { value: application } = JSON.parse(applicationJson)
+    const application = JSON.parse(applicationJson).value
 
     const { payload: amendmentJson } = await Wreck.get(
       `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}/amendment-request`
     )
     const { value: amendment } = JSON.parse(amendmentJson)
 
-    return h.view('applications/amend', {
-      pageTitle: `Application ${prefix}/${year}/${sequenceNumber}`,
-      heading: `Application ${prefix}/${year}/${sequenceNumber}`,
+    return h.view('applications/review', {
+      pageTitle: `Reviewing Application ${prefix}/${year}/${sequenceNumber}`,
+      heading: `Reviewing Application ${prefix}/${year}/${sequenceNumber}`,
       breadcrumbs,
       application,
-      amendment
+      amendment,
+      reviewMode: true,
+      formDisabled: true
+    })
+  }
+}
+
+export const postReview = {
+  method: 'POST',
+  path: '/applications/{prefix}/{year}/{sequenceNumber}/review',
+  handler: async (request, h) => {
+    const {
+      payload: {
+        title,
+        background,
+        site,
+        firstName,
+        lastName,
+        address,
+        email,
+        titleAmend,
+        backgroundAmend,
+        siteAmend,
+        firstNameAmend,
+        lastNameAmend,
+        addressAmend,
+        emailAmend
+      },
+      params: { prefix, year, sequenceNumber }
+    } = request
+
+    const amendment = (originalValue, comment) => {
+      if (comment !== '') return { originalValue, comment }
+    }
+
+    const applicationId = `${prefix}/${year}/${sequenceNumber}`
+
+    const amendmentRequest = {
+      applicationId,
+      title: amendment(title, titleAmend),
+      background: amendment(background, backgroundAmend),
+      applicant: {
+        firstName: amendment(firstName, firstNameAmend),
+        lastName: amendment(lastName, lastNameAmend),
+        address: amendment(address, addressAmend),
+        email: amendment(email, emailAmend)
+      },
+      site: {
+        coordinates: amendment(site, siteAmend)
+      }
+    }
+
+    await Wreck.put(
+      `${config.get('backendApiUrl')}/applications/${applicationId}/amendment-request`,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        payload: amendmentRequest
+      }
+    )
+
+    return h.view('applications/review-submitted', {
+      pageTitle: 'Application review submitted',
+      heading: `Marine license application review submitted for ${applicationId}`,
+      breadcrumbs,
+      continueUrl: config.get('appPathPrefix')
     })
   }
 }
