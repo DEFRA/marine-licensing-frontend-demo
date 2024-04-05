@@ -8,7 +8,21 @@ const breadcrumbs = [
   }
 ]
 
-export const getApplication = {
+const fetchFullApplication = async (applicationId) => {
+  const { payload: applicationJson } = await Wreck.get(
+    `${config.get('backendApiUrl')}/applications/${applicationId}`
+  )
+  const application = JSON.parse(applicationJson).value
+
+  const { payload: amendmentJson } = await Wreck.get(
+    `${config.get('backendApiUrl')}/applications/${applicationId}/amendment-request`
+  )
+  const { value: amendment } = JSON.parse(amendmentJson)
+
+  return { application, amendment }
+}
+
+export const getApplicationCaseworker = {
   method: 'GET',
   path: '/applications/{prefix}/{year}/{sequenceNumber}',
   handler: async (request, h) => {
@@ -16,15 +30,31 @@ export const getApplication = {
       params: { prefix, year, sequenceNumber }
     } = request
 
-    const { payload: applicationJson } = await Wreck.get(
-      `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}`
-    )
-    const application = JSON.parse(applicationJson).value
+    const applicationId = `${prefix}/${year}/${sequenceNumber}`
+    const { application, amendment } = await fetchFullApplication(applicationId)
 
-    const { payload: amendmentJson } = await Wreck.get(
-      `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}/amendment-request`
-    )
-    const { value: amendment } = JSON.parse(amendmentJson)
+    return h.view('applications/caseworker-index', {
+      pageTitle: `Application ${prefix}/${year}/${sequenceNumber}`,
+      heading: `Application ${prefix}/${year}/${sequenceNumber}`,
+      breadcrumbs,
+      application,
+      amendment,
+      reviewUrl: `${config.get('appPathPrefix')}/applications/${applicationId}/review`,
+      formDisabled: true
+    })
+  }
+}
+
+export const getApplicationApplicant = {
+  method: 'GET',
+  path: '/applications/applicant/{prefix}/{year}/{sequenceNumber}',
+  handler: async (request, h) => {
+    const {
+      params: { prefix, year, sequenceNumber }
+    } = request
+
+    const applicationId = `${prefix}/${year}/${sequenceNumber}`
+    const { application, amendment } = await fetchFullApplication(applicationId)
 
     return h.view('applications/index', {
       pageTitle: `Application ${prefix}/${year}/${sequenceNumber}`,
@@ -32,7 +62,7 @@ export const getApplication = {
       breadcrumbs,
       application,
       amendment,
-      formDisabled: !amendment
+      reviewUrl: `${config.get('appPathPrefix')}/applications/${applicationId}/review`
     })
   }
 }
@@ -45,15 +75,8 @@ export const getReview = {
       params: { prefix, year, sequenceNumber }
     } = request
 
-    const { payload: applicationJson } = await Wreck.get(
-      `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}`
-    )
-    const application = JSON.parse(applicationJson).value
-
-    const { payload: amendmentJson } = await Wreck.get(
-      `${config.get('backendApiUrl')}/applications/${prefix}/${year}/${sequenceNumber}/amendment-request`
-    )
-    const { value: amendment } = JSON.parse(amendmentJson)
+    const applicationId = `${prefix}/${year}/${sequenceNumber}`
+    const { application, amendment } = await fetchFullApplication(applicationId)
 
     return h.view('applications/review', {
       pageTitle: `Reviewing Application ${prefix}/${year}/${sequenceNumber}`,

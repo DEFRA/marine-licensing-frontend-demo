@@ -1,5 +1,6 @@
 import {
-  getApplication,
+  getApplicationCaseworker,
+  getApplicationApplicant,
   getReview,
   postReview
 } from '~/src/server/applications/controller'
@@ -8,7 +9,12 @@ const applications = {
   plugin: {
     name: 'applications',
     register: async (server) => {
-      server.route([getApplication, getReview, postReview])
+      server.route([
+        getApplicationApplicant,
+        getApplicationCaseworker,
+        getReview,
+        postReview
+      ])
     }
   }
 }
