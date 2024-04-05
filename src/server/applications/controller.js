@@ -62,7 +62,8 @@ export const getApplicationApplicant = {
       breadcrumbs,
       application,
       amendment,
-      reviewUrl: `${config.get('appPathPrefix')}/applications/${applicationId}/review`
+      reviewUrl: `${config.get('appPathPrefix')}/applications/${applicationId}/review`,
+      formDisabled: application.applicationStatus === 'submitted'
     })
   }
 }

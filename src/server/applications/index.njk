@@ -10,7 +10,9 @@
   }) }}
 
   {% call appPageBody() %}
-    <p class="govuk-body-l">These are the details as submitted by the applicant.</p>
+    <p class="govuk-body-l">This application is in the <strong>
+    {{application.applicationStatus}} </strong> status.
+    </p>
 
     {% include 'partials/application.njk' %}
   {% endcall %}
