@@ -3,6 +3,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
 
 {% block content %}
   {{ appHeading({
@@ -11,10 +12,22 @@
   }) }}
 
   {% call appPageBody() %}
-      <p class="govuk-body">Application successfully submitted.</p>
+
+
+      {{ govukPanel({
+        titleText: "Application submitted",
+        html: ["Your reference number<br><strong>", applicationId, "</strong>"] | join
+      }) }}
+
+      {{ govukButton({
+        text: "View Application",
+        href: applicationDetailsUrl
+        })
+      }}
       {{ govukButton({
         text: "Close",
-        href: continueUrl
+        href: backUrl,
+        classes: "govuk-button--secondary"
       }) }}
   {% endcall %}
 

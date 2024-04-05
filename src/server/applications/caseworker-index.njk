@@ -1,0 +1,23 @@
+{% extends 'layouts/page.njk' %}
+{% from "govuk/components/label/macro.njk" import govukLabel %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  {{ appHeading({
+    text: heading,
+    caption: "Marine Licensing Alpha"
+  }) }}
+
+  {% call appPageBody() %}
+    <p class="govuk-body-l">These are the details as submitted by the applicant.</p>
+
+    {% include 'partials/application.njk' %}
+
+      {{ govukButton({
+        text: "Review",
+        href: reviewUrl
+      }) }}
+  {% endcall %}
+{% endblock %}

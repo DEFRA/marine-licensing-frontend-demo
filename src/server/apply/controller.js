@@ -32,30 +32,36 @@ const postRoute = {
       payload: { title, background, site, firstName, lastName, address, email }
     } = request
 
-    await Wreck.post(`${config.get('backendApiUrl')}/applications`, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      payload: {
-        title,
-        background,
-        applicant: {
-          firstName,
-          lastName,
-          address,
-          email
+    const response = await Wreck.post(
+      `${config.get('backendApiUrl')}/applications`,
+      {
+        headers: {
+          'Content-Type': 'application/json'
         },
-        site: {
-          coordinates: site
+        payload: {
+          title,
+          background,
+          applicant: {
+            firstName,
+            lastName,
+            address,
+            email
+          },
+          site: {
+            coordinates: site
+          }
         }
       }
-    })
+    )
+    const { applicationId } = JSON.parse(response.payload).value
 
     return h.view('apply/submitted', {
       pageTitle: 'Application submitted',
       heading: 'Marine license application submitted',
       breadcrumbs,
-      continueUrl: config.get('appPathPrefix')
+      applicationId,
+      applicationDetailsUrl: `${config.get('appPathPrefix')}/applications/applicant/${applicationId}`,
+      backUrl: config.get('appPathPrefix')
     })
   }
 }
