@@ -2,6 +2,25 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% macro review(fieldName) %}
+  {%if reviewMode %}
+  <details class="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      Request amendments on {{fieldName}}
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+    {{ govukTextarea({
+      id: [fieldName, "Amend"] | join,
+      name: [fieldName, "Amend"] | join
+    }) }}
+  </div>
+  </details>
+  {% endif %}
+{% endmacro %}
 
 <form method="POST">
 
@@ -15,8 +34,9 @@
     disabled: formDisabled,
     errorMessage: {
       text: amendment.title.comment
-    } if amendment.title.comment
+    } if not reviewMode and amendment.title.comment
   }) }}
+  {{ review("title") }}
 
   {{ govukTextarea({
     name: "background",
@@ -31,8 +51,9 @@
     disabled: formDisabled,
     errorMessage: {
       text: amendment.background.comment
-    } if amendment.background.comment
+    } if not reviewMode and amendment.background.comment
   }) }}
+  {{ review("background") }}
 
   {{ govukTextarea({
     name: "site",
@@ -47,8 +68,9 @@
     disabled: formDisabled,
     errorMessage: {
       text: amendment.site.coordinates.comment
-    } if amendment.site.coordinates.comment
+    } if not reviewMode and amendment.site.coordinates.comment
   }) }}
+  {{ review("site") }}
 
   {% call govukFieldset({
     legend: {
@@ -68,8 +90,9 @@
       disabled: formDisabled,
       errorMessage: {
         text: amendment.applicant.firstName.comment
-      } if amendment.applicant.firstName.comment
+      } if not reviewMode and amendment.applicant.firstName.comment
     }) }}
+    {{ review("firstName")}}
 
     {{ govukInput({
       label: {
@@ -82,8 +105,9 @@
       disabled: formDisabled,
       errorMessage: {
         text: amendment.applicant.lastName.comment
-      } if amendment.applicant.lastName.comment
+      } if not reviewMode and amendment.applicant.lastName.comment
     }) }}
+    {{ review("lastName")}}
 
     {{ govukInput({
       label: {
@@ -96,8 +120,9 @@
       disabled: formDisabled,
       errorMessage: {
         text: amendment.applicant.address.comment
-      } if amendment.applicant.address.comment
+      } if not reviewMode and amendment.applicant.address.comment
     }) }}
+    {{ review("address")}}
     {% from "govuk/components/input/macro.njk" import govukInput %}
 
     {{ govukInput({
@@ -116,13 +141,22 @@
       disabled: formDisabled,
       errorMessage: {
         text: amendment.applicant.email.comment
-      } if amendment.applicant.email.comment
+      } if not reviewMode and amendment.applicant.email.comment
     }) }}
+    {{ review("email")}}
   {% endcall %}
 
   {%if not formDisabled %}
     {{ govukButton({
       text: "Submit application"
     }) }}
+  {% endif %}
+
+  {%if reviewMode %}
+    {{ govukButton({
+        text: "Request update",
+        classes: "govuk-button--warning"
+      })
+    }}
   {% endif %}
 </form>

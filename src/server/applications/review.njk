@@ -13,10 +13,6 @@
   {% call appPageBody() %}
     <p class="govuk-body-l">These are the details as submitted by the applicant.</p>
 
-    {{ govukErrorSummary({
-      titleText: "Your case worker has identified some issues with your application. Please review below for specific information."
-    }) }}
-
     {% include 'partials/application.njk' %}
   {% endcall %}
 {% endblock %}
